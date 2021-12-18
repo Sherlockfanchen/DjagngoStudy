@@ -18,9 +18,11 @@ Including another URLconf
 # 根路由
 from django.contrib import admin
 from django.urls import path,include
+from firstapp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls), # path匹配的是字符串
     path('',include(('firstapp.urls','app'),namespace='app')), # namespace是命名空间
+    path('',views.home_page,name = "home"),
 
 ]

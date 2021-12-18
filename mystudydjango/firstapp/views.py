@@ -4,6 +4,41 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import render
 from firstapp.models import Student
+from django.shortcuts import redirect
+from django.contrib.auth import logout
+
+
+
+def home_page(request):
+    return HttpResponse('<html><title>To-Do lists</title></html>')
+
+'''测试登陆'''
+
+def home(request):
+    account = request.session.get("account",default = "未登录" ) # 从session中获取account,没有则为未登录
+    return render(request,'home.html',{"account":account})  # 返回home.html，将account传给home.html
+
+def login(request):
+    if request.method == "GET": # 如果是GET请求则返回登陆界面
+        path = request.GET.get("from") # 获取URL路径的from参数
+        return render(request,'login.html',{"path":path})
+    else:  #否则就是POST请求提交表单数据
+        account = request.POST.get("account")  # 获取表单中account的值
+        passwd = request.POST.get("passwd")  # 获取表单中的passwd值
+        path = request.GET.get("from") # 获取url路径中from参数，用来登陆成功后跳转回登陆前界面
+        if account == "root" and passwd == "1":  # 假设用户账号为root 密码为 1
+            # 登陆成功
+            request.session["account"] = account # 登陆成功 设置session 下次访问就能辨别该用户
+            return redirect('/home/')  # 跳转回home页面
+        else:
+            # 登陆失败
+            url = "/login/?from=%s"%(path)
+            return redirect(url)  # 登陆失败返回登陆界面
+
+def quit(request):
+    logout(request) # 退出登陆状态
+    return redirect('/home/')  # 返回home界面
+
 
 
 

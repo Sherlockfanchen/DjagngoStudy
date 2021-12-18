@@ -9,4 +9,8 @@ urlpatterns = [
    # 位置参数：新闻查看/第几页/第几行
    re_path(r'show_news/(\d+)/(\d+)/$',views.show_news),
    re_path(r'show_news2/(?P<category>\d+)/(?P<page_no>\d+)/$',views.show_news2),
+   # re_path(r'^$',views.home_page,name = 'home'),
+   re_path(r'^home/$',views.home),
+   re_path(r'^login/$',views.login),
+   re_path(r'^quit/$',views.quit),
 ]
